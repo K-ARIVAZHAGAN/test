@@ -24,7 +24,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          config: .gitleaks.toml
+          config-path: .gitleaks.toml
 
       - name: Upload GitLeaks report
         uses: actions/upload-artifact@v3
