@@ -27,7 +27,7 @@ jobs:
           config-path: .gitleaks.toml
 
       - name: Upload GitLeaks report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: gitleaks-report
