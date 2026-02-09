@@ -1,0 +1,128 @@
+title = "GitLeaks Configuration for Secret Detection"
+
+[extend]
+# Extend default GitLeaks rules
+useDefault = true
+
+[[rules]]
+id = "custom-api-key"
+description = "Custom API Key Pattern"
+regex = '''(?i)(api[_-]?(key|token|secret)|token|password|passwd|secret)['\"]?\s*[:=]\s*['\"]?[a-zA-Z0-9\-_!@#$%^&*()+=]{8,60}['\"]?'''
+tags = ["key", "API", "custom"]
+
+[[rules]]
+id = "database-url"
+description = "Database Connection String"
+regex = '''(?i)(database[_-]?url|db[_-]?url|connection[_-]?string)['\"]?\s*[:=]\s*['\"]?(mongodb|mysql|postgres|sqlite)://[^'"\s]+['\"]?'''
+tags = ["database", "connection"]
+
+[[rules]]
+id = "jwt-token"
+description = "JWT Token"
+regex = '''eyJ[A-Za-z0-9_-]*\.eyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*'''
+tags = ["jwt", "token"]
+
+[[rules]]
+id = "generic-secret"
+description = "Generic Secret Values"
+regex = '''(?i)(secret|password|token|key)['\"]?\s*[:=]\s*['\"][^'"\s]{8,}['\"]'''
+tags = ["secret", "generic"]
+
+[[rules]]
+id = "azure-storage-key"
+description = "Azure Storage Account Key"
+regex = '''(?i)(azure[_-]?storage[_-]?(key|account)|storage[_-]?account[_-]?key)['\"]?\s*[:=]\s*['\"]?[a-zA-Z0-9+/]{88}['\"]?'''
+tags = ["azure", "storage", "key"]
+
+[[rules]]
+id = "google-api-key"
+description = "Google API Key"
+regex = '''AIza[0-9A-Za-z_-]{35}'''
+tags = ["google", "api", "key"]
+
+[[rules]]
+id = "heroku-api-key"
+description = "Heroku API Key"
+regex = '''(?i)heroku[_-]?api[_-]?key['\"]?\s*[:=]\s*['\"]?[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}['\"]?'''
+tags = ["heroku", "api", "key"]
+
+# Files to always ignore
+[allowlist]
+description = "Allowlist for common false positives and safe files"
+files = [
+  # Documentation and examples
+  '''(.*?)(\.md|\.txt|\.rst|\.doc|\.docx|\.pdf)$''',
+  '''(.*?)example\.(js|py|java|cs|ts)$''',
+  '''(.*?)sample\.(js|py|java|cs|ts)$''',
+  '''(.*?)template\.(js|py|java|cs|ts)$''',
+  '''README.*''',
+  '''CHANGELOG.*''',
+  '''LICENSE.*''',
+
+  # Build and dependency files
+  '''package-lock\.json$''',
+  '''yarn\.lock$''',
+  '''Pipfile\.lock$''',
+  '''poetry\.lock$''',
+  '''.*\.min\.(js|css)$''',
+
+  # Binary and media files
+  '''(.*?)\.(jpg|jpeg|png|gif|bmp|svg|ico|pdf|zip|tar|gz|exe|dll|so|dylib|bin)$''',
+
+  # Configuration templates
+  '''(.*?)\.example\.(json|yml|yaml|env|ini|conf)$''',
+  '''(.*?)\.template\.(json|yml|yaml|env|ini|conf)$''',
+  '''(.*?)\.sample\.(json|yml|yaml|env|ini|conf)$'''
+]
+
+# Regex patterns to ignore (common false positives)
+regexes = [
+  # Example/placeholder values
+  '''YOUR_API_KEY_HERE''',
+  '''YOUR_.*_HERE''',
+  '''REPLACE_WITH_.*''',
+  '''<YOUR.*>''',
+  '''{{.*}}''',
+  '''EXAMPLE.*''',
+  '''example.*''',
+  '''CHANGEME''',
+  '''changeme''',
+  '''FIXME''',
+  '''TODO''',
+  '''test.*''',
+  '''dummy.*''',
+  '''placeholder.*''',
+  '''sample.*''',
+
+  # Common test/example keys
+  '''AKIAIOSFODNN7EXAMPLE''',
+  '''wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY''',
+  '''sk-test.*''',
+  '''pk-test.*''',
+
+  # Generic patterns
+  '''^[Xx]{8,}$''',
+  '''^[0-9]{8,}$''',
+  '''^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$''',
+
+  # Common config values that aren't secrets
+  '''localhost''',
+  '''127\.0\.0\.1''',
+  '''192\.168\.''',
+  '''10\.0\.''',
+  '''development''',
+  '''production''',
+  '''staging''',
+  '''debug''',
+  '''info''',
+  '''warn''',
+  '''error'''
+]
+
+# Additional entropy settings
+[allowlist.entropy]
+files = [
+  '''(.*?)test.*''',
+  '''(.*?)spec.*''',
+  '''(.*?)example.*'''
+]

@@ -1,0 +1,141 @@
+repos:
+  # GitLeaks - Primary Secret Detection
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks
+        args: ['--config=.gitleaks.toml']
+
+  # Built-in pre-commit hooks (cross-platform)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      # Detect private keys
+      - id: detect-private-key
+        name: Detect Private Keys
+      # Detect AWS credentials
+      - id: detect-aws-credentials
+        name: Detect AWS Credentials
+        args: ['--allow-missing-credentials']
+      # Check for large files
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      # Check JSON syntax
+      - id: check-json
+      # Check YAML syntax
+      - id: check-yaml
+      # Prevent commits to main/master
+      - id: no-commit-to-branch
+        args: ['--branch=main', '--branch=master']
+      # Check for merge conflicts
+      - id: check-merge-conflict
+      # Trim trailing whitespace
+      - id: trailing-whitespace
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+
+  # Python security with Bandit
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: ['-r', '.', '-ll', '-f', 'screen']
+        files: \.py$
+        exclude: |
+          (?x)^(
+              tests/.*|
+              test_.*\.py
+          )$
+
+  # General Security and Code Quality
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      # Prevent committing to main/master branches
+      - id: no-commit-to-branch
+        args: ['--branch=main', '--branch=master']
+
+      # Check for merge conflicts
+      - id: check-merge-conflict
+
+      # Check for large files (>500KB)
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+
+      # Prevent committing private keys
+      - id: detect-private-key
+
+      # Check AWS credentials file
+      - id: detect-aws-credentials
+        args: ['--allow-missing-credentials']
+
+      # Check for case conflicts
+      - id: check-case-conflict
+
+      # Check executables have shebangs
+      - id: check-executables-have-shebangs
+
+      # Check JSON syntax
+      - id: check-json
+
+      # Check YAML syntax
+      - id: check-yaml
+
+      # Check TOML syntax
+      - id: check-toml
+
+      # Trim trailing whitespace
+      - id: trailing-whitespace
+
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+
+      # Check for byte-order marker
+      - id: check-byte-order-marker
+
+  # Python-specific hooks (if using Python)
+  - repo: https://github.com/psf/black
+    rev: 23.9.1
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+
+  # JavaScript/Node.js specific hooks (if using JS/TS)
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.50.0
+    hooks:
+      - id: eslint
+        files: \.(js|ts|jsx|tsx)$
+        types: [file]
+
+  # Security-focused hooks
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: ['-r', '.']
+        exclude: |
+          (?x)^(
+              tests/.*|
+              test_.*\.py
+          )$
+
+  # Docker security
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+
+  # Terraform security (if using Terraform)
+  - repo: https://github.com/aquasecurity/tfsec
+    rev: v1.28.1
+    hooks:
+      - id: tfsec
+
+fail_fast: true
+minimum_pre_commit_version: '2.20.0'
