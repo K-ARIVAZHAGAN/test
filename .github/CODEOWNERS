@@ -1,0 +1,21 @@
+# Default owner for the entire repository
+* @K-ARIVAZHAGAN
+
+# Frontend
+/client/ @K-ARIVAZHAGAN
+/frontend/ @K-ARIVAZHAGAN
+/src/ @K-ARIVAZHAGAN
+
+# Backend
+/server/ @K-ARIVAZHAGAN
+/backend/ @K-ARIVAZHAGAN
+/api/ @K-ARIVAZHAGAN
+
+# Configuration & CI/CD
+.github/ @K-ARIVAZHAGAN
+*.yml @K-ARIVAZHAGAN
+*.yaml @K-ARIVAZHAGAN
+
+# Documentation
+README.md @K-ARIVAZHAGAN
+docs/ @K-ARIVAZHAGAN
